@@ -509,7 +509,10 @@
       transition: background var(--transition);
     }
     .cart-close-btn:hover { background: rgba(255,255,255,.3); }
-    .cart-body { flex: 1; overflow-y: auto; padding: 16px; }
+    .cart-body { flex: 1; overflow-y: auto; padding: 16px; padding-bottom: 24px; }
+    @media (max-width: 600px) {
+      .cart-drawer { width: 100vw; }
+    }
     .cart-empty { text-align: center; padding: 52px 20px; color: #a07850; }
     .cart-empty .ei { font-size: 3rem; display: block; margin-bottom: 10px; }
     .cart-item {
@@ -580,9 +583,14 @@
     .btn-send-order:disabled { opacity: .4; cursor: not-allowed; transform: none; }
 
     /* ===== THANK YOU PAGE ===== */
+    @keyframes checkPop {
+      0%   { transform: scale(0) rotate(-20deg); opacity: 0; }
+      60%  { transform: scale(1.25) rotate(5deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0); opacity: 1; }
+    }
     .thankyou-overlay {
       position: fixed; inset: 0;
-      background: var(--cream);
+      background: linear-gradient(160deg, #fff8ee 0%, #f0e8d8 100%);
       z-index: 600;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
@@ -592,9 +600,19 @@
       transition: opacity .4s;
     }
     .thankyou-overlay.show { opacity: 1; pointer-events: all; }
-    .ty-icon  { font-size: 5rem; margin-bottom: 14px; }
-    .ty-title { font-size: 1.9rem; font-weight: 900; color: var(--brown); margin-bottom: 8px; }
-    .ty-sub   { font-size: 1rem; color: var(--brown-mid); margin-bottom: 28px; line-height: 1.7; }
+    .ty-icon {
+      width: 110px; height: 110px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2ecc71, #27ae60);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3.5rem;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 32px rgba(46,204,113,.35);
+      opacity: 0;
+    }
+    .thankyou-overlay.show .ty-icon { animation: checkPop .55s cubic-bezier(.34,1.56,.64,1) .15s forwards; }
+    .ty-title { font-size: 2rem; font-weight: 900; color: var(--brown); margin-bottom: 10px; }
+    .ty-sub   { font-size: 1.05rem; color: var(--brown-mid); margin-bottom: 32px; line-height: 1.8; max-width: 300px; }
     .ty-pay {
       display: inline-flex; align-items: center; gap: 8px;
       padding: 14px 32px;
@@ -610,15 +628,18 @@
     }
     .ty-pay:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200,150,46,.45); }
     .ty-back {
-      margin-top: 10px;
-      font-size: .9rem; color: var(--brown-mid);
-      cursor: pointer;
-      background: none; border: none;
+      margin-top: 6px;
+      padding: 12px 36px;
+      background: var(--brown);
+      color: var(--gold-pale);
+      border: none;
+      border-radius: 10px;
       font-family: 'Heebo', sans-serif;
-      text-decoration: underline;
-      text-underline-offset: 3px;
+      font-size: 1rem; font-weight: 700;
+      cursor: pointer;
+      transition: background var(--transition), transform var(--transition);
     }
-    .ty-back:hover { color: var(--brown); }
+    .ty-back:hover { background: var(--brown-mid); transform: translateY(-1px); }
 
     /* ===== SCROLLBAR ===== */
     ::-webkit-scrollbar { width: 8px; }
@@ -642,6 +663,7 @@
       <h1>אתנחתא</h1>
       <p>סוף שבוע בטעם יהודי</p>
     </div>
+    <a href="https://maps.app.goo.gl/bimmXU2qCuNzmVBC7" target="_blank" rel="noopener" style="margin-right:auto;margin-left:4px;display:inline-flex;align-items:center;gap:5px;padding:7px 13px;background:rgba(200,150,46,.18);border:1.5px solid var(--gold);border-radius:20px;color:var(--gold-pale);font-size:.78rem;font-weight:600;text-decoration:none;white-space:nowrap;transition:background .2s;" onmouseover="this.style.background='rgba(200,150,46,.35)'" onmouseout="this.style.background='rgba(200,150,46,.18)'">📍 ניווט</a>
   </div>
 </header>
 
@@ -686,7 +708,7 @@
     <div class="cart-total-row">סה"כ לתשלום: <span id="cartTotal">0₪</span></div>
     <button class="btn-send-order" id="btnSendOrder">
       <svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.82.736 5.47 2.027 7.77L0 32l8.437-2.01A15.93 15.93 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.3a13.27 13.27 0 01-6.77-1.848l-.485-.29-5.007 1.194 1.215-4.878-.316-.5A13.257 13.257 0 012.7 16C2.7 8.66 8.66 2.7 16 2.7S29.3 8.66 29.3 16 23.34 29.3 16 29.3zm7.27-9.97c-.398-.2-2.355-1.16-2.72-1.293-.365-.133-.63-.2-.895.2-.266.398-1.028 1.293-1.26 1.56-.232.265-.464.298-.862.1-.398-.2-1.68-.62-3.2-1.977-1.183-1.057-1.98-2.362-2.213-2.76-.232-.398-.025-.614.175-.812.18-.178.398-.465.597-.697.2-.233.266-.4.4-.665.133-.266.066-.498-.033-.697-.1-.2-.895-2.16-1.227-2.956-.323-.777-.65-.672-.895-.684l-.762-.013c-.266 0-.697.1-1.063.498-.365.398-1.393 1.36-1.393 3.32s1.426 3.85 1.625 4.116c.2.265 2.808 4.29 6.805 5.99.952.41 1.694.655 2.273.838.955.303 1.824.26 2.51.158.766-.114 2.355-.963 2.688-1.893.333-.93.333-1.728.233-1.893-.1-.166-.365-.266-.763-.465z"/></svg>
-      שלח הזמנה בוואטסאפ
+      שלח הזמנה ✉️
     </button>
   </div>
 </div>
@@ -694,11 +716,11 @@
 <!-- ===== THANK YOU PAGE ===== -->
 <div class="thankyou-overlay" id="thankyouOverlay">
   <div class="ty-icon">✅</div>
-  <div class="ty-title">תודה על ההזמנה! 🎉</div>
-  <div class="ty-sub">ההזמנה שלנו התקבלה<br>נחזור אליך בקרוב דרך וואטסאפ 💬</div>
+  <div class="ty-title">ההזמנה שלך נקלטה! 🎉</div>
+  <div class="ty-sub">נחזור אליך בהקדם לאישור</div>
   <!-- Replace PAYMENT_LINK_HERE with your Sumit/PayPlus payment link -->
   <a href="PAYMENT_LINK_HERE" class="ty-pay" target="_blank" rel="noopener">💳 לתשלום מאובטח בכרטיס אשראי</a>
-  <button class="ty-back" id="tyBack">חזרה לתפריט</button>
+  <button class="ty-back" id="tyBack">חזור לתפריט</button>
 </div>
 
 <!-- ===== FOOTER ===== -->
@@ -710,6 +732,8 @@
     <svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.82.736 5.47 2.027 7.77L0 32l8.437-2.01A15.93 15.93 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.3a13.27 13.27 0 01-6.77-1.848l-.485-.29-5.007 1.194 1.215-4.878-.316-.5A13.257 13.257 0 012.7 16C2.7 8.66 8.66 2.7 16 2.7S29.3 8.66 29.3 16 23.34 29.3 16 29.3zm7.27-9.97c-.398-.2-2.355-1.16-2.72-1.293-.365-.133-.63-.2-.895.2-.266.398-1.028 1.293-1.26 1.56-.232.265-.464.298-.862.1-.398-.2-1.68-.62-3.2-1.977-1.183-1.057-1.98-2.362-2.213-2.76-.232-.398-.025-.614.175-.812.18-.178.398-.465.597-.697.2-.233.266-.4.4-.665.133-.266.066-.498-.033-.697-.1-.2-.895-2.16-1.227-2.956-.323-.777-.65-.672-.895-.684l-.762-.013c-.266 0-.697.1-1.063.498-.365.398-1.393 1.36-1.393 3.32s1.426 3.85 1.625 4.116c.2.265 2.808 4.29 6.805 5.99.952.41 1.694.655 2.273.838.955.303 1.824.26 2.51.158.766-.114 2.355-.963 2.688-1.893.333-.93.333-1.728.233-1.893-.1-.166-.365-.266-.763-.465z"/></svg>
     לחץ כאן להזמנה
   </a>
+  <hr class="divider" />
+  <a href="https://maps.app.goo.gl/bimmXU2qCuNzmVBC7" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;margin-bottom:10px;padding:10px 24px;background:var(--gold);color:var(--brown-dark);font-weight:700;font-size:.95rem;border-radius:25px;text-decoration:none;border-bottom:none;box-shadow:0 3px 12px rgba(200,150,46,.35);transition:transform .2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">📍 לחץ לניווט אלינו</a>
   <hr class="divider" />
   <p style="font-size:.78rem;opacity:.6;">© 2025 כל הזכויות שמורות · אתנחתא</p>
 </footer>
@@ -908,10 +932,18 @@ document.getElementById('btnSendOrder').addEventListener('click', () => {
    THANK YOU PAGE
    ================================================ */
 function showThankyou() {
-  document.getElementById('thankyouOverlay').classList.add('show');
+  const overlay = document.getElementById('thankyouOverlay');
+  const icon = overlay.querySelector('.ty-icon');
+  // Reset animation so it plays fresh each time
+  icon.style.animation = 'none';
+  icon.offsetHeight; // reflow
+  icon.style.animation = '';
+  overlay.classList.add('show');
 }
 document.getElementById('tyBack').addEventListener('click', () => {
   document.getElementById('thankyouOverlay').classList.remove('show');
+  cart = [];
+  updateCartUI();
 });
 
 /* ================================================
