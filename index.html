@@ -573,16 +573,16 @@
       padding: 14px 0;
       border: none;
       border-radius: 12px;
-      background: #25d366;
-      color: #fff;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: var(--brown-dark);
       font-family: 'Heebo', sans-serif;
       font-size: 1.05rem; font-weight: 800;
       cursor: pointer;
       display: flex; align-items: center; justify-content: center; gap: 8px;
-      transition: background var(--transition), transform var(--transition);
-      box-shadow: 0 4px 14px rgba(37,211,102,.35);
+      transition: transform var(--transition), box-shadow var(--transition);
+      box-shadow: 0 4px 14px rgba(200,150,46,.35);
     }
-    .btn-send-order:hover { background: #1ebe5c; transform: translateY(-2px); }
+    .btn-send-order:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200,150,46,.45); }
     .btn-send-order:disabled { opacity: .4; cursor: not-allowed; transform: none; }
 
     /* ===== THANK YOU PAGE ===== */
@@ -616,20 +616,6 @@
     .thankyou-overlay.show .ty-icon { animation: checkPop .55s cubic-bezier(.34,1.56,.64,1) .15s forwards; }
     .ty-title { font-size: 2rem; font-weight: 900; color: var(--brown); margin-bottom: 10px; }
     .ty-sub   { font-size: 1.05rem; color: var(--brown-mid); margin-bottom: 32px; line-height: 1.8; max-width: 300px; }
-    .ty-pay {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 14px 32px;
-      background: linear-gradient(135deg, var(--gold), var(--gold-light));
-      color: var(--brown-dark);
-      font-family: 'Heebo', sans-serif;
-      font-size: 1rem; font-weight: 800;
-      border-radius: 12px;
-      text-decoration: none;
-      box-shadow: 0 4px 16px rgba(200,150,46,.35);
-      transition: transform var(--transition), box-shadow var(--transition);
-      margin-bottom: 16px;
-    }
-    .ty-pay:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200,150,46,.45); }
     .ty-back {
       margin-top: 6px;
       padding: 12px 36px;
@@ -643,6 +629,125 @@
       transition: background var(--transition), transform var(--transition);
     }
     .ty-back:hover { background: var(--brown-mid); transform: translateY(-1px); }
+
+    /* ===== STEP OVERLAYS (MULTI-STEP ORDER FLOW) ===== */
+    .step-overlay {
+      position: fixed; inset: 0;
+      background: var(--cream);
+      z-index: 550;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-start;
+      overflow-y: auto;
+      opacity: 0; pointer-events: none;
+      transition: opacity .3s;
+    }
+    .step-overlay.show { opacity: 1; pointer-events: all; }
+    .step-card {
+      width: 100%; max-width: 500px;
+      padding: 0 20px 40px;
+      display: flex; flex-direction: column;
+    }
+    .step-back-btn {
+      align-self: flex-start;
+      background: none; border: none;
+      color: var(--brown-mid);
+      font-family: 'Heebo', sans-serif;
+      font-size: .9rem; font-weight: 600;
+      cursor: pointer; padding: 16px 0 8px;
+      display: flex; align-items: center; gap: 4px;
+      transition: color var(--transition);
+    }
+    .step-back-btn:hover { color: var(--brown); }
+    .step-title {
+      font-size: 1.65rem; font-weight: 900;
+      color: var(--brown);
+      margin: 4px 0 22px;
+      text-align: center;
+    }
+    .form-group {
+      margin-bottom: 18px;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .form-group label {
+      font-size: .9rem; font-weight: 700; color: var(--brown-mid);
+    }
+    .form-group input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid var(--cream-dark);
+      border-radius: 10px;
+      background: var(--white);
+      font-family: 'Heebo', sans-serif;
+      font-size: 1rem; color: var(--brown);
+      outline: none;
+      transition: border-color var(--transition), box-shadow var(--transition);
+      direction: rtl;
+    }
+    .form-group input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(200,150,46,.15);
+    }
+    .form-group input.invalid { border-color: #e74c3c; }
+    .field-error { font-size: .8rem; color: #e74c3c; font-weight: 600; min-height: 16px; }
+    .order-summary-box {
+      background: var(--brown);
+      color: var(--gold-pale);
+      border-radius: 14px;
+      padding: 18px;
+      margin: 6px 0 22px;
+      font-size: .92rem;
+      line-height: 1.9;
+    }
+    .sum-row { display: flex; justify-content: space-between; padding: 2px 0; }
+    .sum-total {
+      border-top: 1px solid rgba(245,225,176,.3);
+      margin-top: 8px; padding-top: 8px;
+      font-size: 1rem; font-weight: 800; color: var(--gold-light);
+    }
+    .btn-step-primary {
+      width: 100%;
+      padding: 15px 0;
+      border: none; border-radius: 12px;
+      background: linear-gradient(135deg, var(--brown), var(--brown-mid));
+      color: var(--gold-pale);
+      font-family: 'Heebo', sans-serif;
+      font-size: 1.05rem; font-weight: 900;
+      cursor: pointer;
+      transition: transform var(--transition), box-shadow var(--transition);
+      box-shadow: 0 4px 16px rgba(92,51,23,.3);
+    }
+    .btn-step-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(92,51,23,.4); }
+    /* Payment step */
+    .pay-card { align-items: center; padding-top: 16px; text-align: center; }
+    .pay-icon { font-size: 4rem; margin: 28px 0 10px; filter: drop-shadow(0 4px 8px rgba(200,150,46,.3)); }
+    .pay-sub { font-size: 1.05rem; color: var(--brown-mid); margin-bottom: 28px; }
+    .btn-pay-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 15px 40px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: var(--brown-dark);
+      font-family: 'Heebo', sans-serif;
+      font-size: 1.1rem; font-weight: 900;
+      text-decoration: none;
+      box-shadow: 0 4px 16px rgba(200,150,46,.4);
+      transition: transform var(--transition), box-shadow var(--transition);
+      margin-bottom: 16px;
+    }
+    .btn-pay-link:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200,150,46,.5); }
+    .btn-done-paying {
+      padding: 13px 36px;
+      border: 2px solid var(--brown);
+      border-radius: 10px;
+      background: transparent;
+      color: var(--brown);
+      font-family: 'Heebo', sans-serif;
+      font-size: 1rem; font-weight: 700;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background var(--transition), color var(--transition);
+    }
+    .btn-done-paying:hover { background: var(--brown); color: var(--gold-pale); }
 
     /* ===== SCROLLBAR ===== */
     ::-webkit-scrollbar { width: 8px; }
@@ -715,14 +820,51 @@
   </div>
 </div>
 
-<!-- ===== THANK YOU PAGE ===== -->
+<!-- ===== THANK YOU PAGE (STEP 4) ===== -->
 <div class="thankyou-overlay" id="thankyouOverlay">
   <div class="ty-icon">✅</div>
   <div class="ty-title">ההזמנה שלכם נקלטה! 🎉</div>
   <div class="ty-sub">תודה שהזמנתם אצלינו</div>
-  <!-- Replace PAYMENT_LINK_HERE with your Sumit/PayPlus payment link -->
-  <a href="PAYMENT_LINK_HERE" class="ty-pay" target="_blank" rel="noopener">💳 לתשלום מאובטח בכרטיס אשראי</a>
   <button class="ty-back" id="tyBack">חזור לתפריט</button>
+</div>
+
+<!-- ===== ORDER FORM OVERLAY (STEP 2) ===== -->
+<div class="step-overlay" id="orderFormOverlay">
+  <div class="step-card">
+    <button class="step-back-btn" id="formBackBtn">← חזור לסל</button>
+    <h2 class="step-title">📋 פרטי ההזמנה</h2>
+    <form id="orderForm" novalidate>
+      <div class="form-group">
+        <label for="fieldName">שם מלא *</label>
+        <input type="text" id="fieldName" placeholder="הכנס שם מלא" required />
+        <span class="field-error" id="errName"></span>
+      </div>
+      <div class="form-group">
+        <label for="fieldPhone">מספר טלפון *</label>
+        <input type="tel" id="fieldPhone" placeholder="050-0000000" required />
+        <span class="field-error" id="errPhone"></span>
+      </div>
+      <div class="form-group">
+        <label for="fieldAddress">כתובת למשלוח *</label>
+        <input type="text" id="fieldAddress" placeholder="רחוב, מספר בית, עיר" required />
+        <span class="field-error" id="errAddress"></span>
+      </div>
+      <div class="order-summary-box" id="formOrderSummary"></div>
+      <button type="submit" class="btn-step-primary">המשך לתשלום 💳</button>
+    </form>
+  </div>
+</div>
+
+<!-- ===== PAYMENT OVERLAY (STEP 3) ===== -->
+<div class="step-overlay" id="paymentOverlay">
+  <div class="step-card pay-card">
+    <button class="step-back-btn" id="payBackBtn" style="align-self:flex-start">← חזור לפרטים</button>
+    <div class="pay-icon">💳</div>
+    <h2 class="step-title">תשלום מאובטח</h2>
+    <p class="pay-sub">לחץ לתשלום בכרטיס אשראי</p>
+    <a href="PAYMENT_LINK_HERE" id="payLink" class="btn-pay-link" target="_blank" rel="noopener">לתשלום ↗</a>
+    <button class="btn-done-paying" id="btnDonePaying">סיימתי לשלם ✅</button>
+  </div>
 </div>
 
 <!-- ===== FOOTER ===== -->
@@ -916,19 +1058,112 @@ cartFab.addEventListener('click', openCart);
 cartCloseBtn.addEventListener('click', closeCart);
 cartBackdrop.addEventListener('click', closeCart);
 
+/* Step 1 → Step 2: open order form */
 document.getElementById('btnSendOrder').addEventListener('click', () => {
   if (cart.length === 0) return;
-  const lines = cart.map(i => `• ${i.name}${i.detail ? ' – ' + i.detail : ''} x${i.qty} – ${i.unitPrice * i.qty}₪`).join('\n');
-  const msg = `שלום! ההזמנה שלי מאתנחתא:\n${lines}\n\nסה"כ לתשלום: ₪${cartTotal()}\nתודה!`;
-  window.open(waLink(msg), '_blank');
   closeCart();
+  openOrderForm();
+});
+
+/* ================================================
+   MULTI-STEP ORDER FLOW
+   ================================================ */
+let orderCustomer = { name: '', phone: '', address: '' };
+
+function openOrderForm() {
+  // Build order summary inside form
+  const summaryEl = document.getElementById('formOrderSummary');
+  let html = '';
+  cart.forEach(i => {
+    const label = `${i.emoji} ${i.name}${i.detail ? ' – ' + i.detail : ''} ×${i.qty}`;
+    html += `<div class="sum-row"><span>${label}</span><span>${i.unitPrice * i.qty}₪</span></div>`;
+  });
+  html += `<div class="sum-row sum-total"><span>💰 סה"כ לתשלום</span><span>₪${cartTotal()}</span></div>`;
+  summaryEl.innerHTML = html;
+  document.getElementById('orderFormOverlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+/* Step 2 → back to cart */
+document.getElementById('formBackBtn').addEventListener('click', () => {
+  document.getElementById('orderFormOverlay').classList.remove('show');
+  document.body.style.overflow = '';
+  openCart();
+});
+
+/* Step 2 → Step 3: validate & proceed to payment */
+document.getElementById('orderForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const name    = document.getElementById('fieldName').value.trim();
+  const phone   = document.getElementById('fieldPhone').value.trim();
+  const address = document.getElementById('fieldAddress').value.trim();
+  let valid = true;
+
+  if (!name) {
+    document.getElementById('errName').textContent = 'נא להזין שם מלא';
+    document.getElementById('fieldName').classList.add('invalid');
+    valid = false;
+  } else {
+    document.getElementById('errName').textContent = '';
+    document.getElementById('fieldName').classList.remove('invalid');
+  }
+  if (!phone || !/^[\d\s\-+()\u05d0-\u05ea]{7,}$/.test(phone)) {
+    document.getElementById('errPhone').textContent = 'נא להזין מספר טלפון תקין';
+    document.getElementById('fieldPhone').classList.add('invalid');
+    valid = false;
+  } else {
+    document.getElementById('errPhone').textContent = '';
+    document.getElementById('fieldPhone').classList.remove('invalid');
+  }
+  if (!address) {
+    document.getElementById('errAddress').textContent = 'נא להזין כתובת למשלוח';
+    document.getElementById('fieldAddress').classList.add('invalid');
+    valid = false;
+  } else {
+    document.getElementById('errAddress').textContent = '';
+    document.getElementById('fieldAddress').classList.remove('invalid');
+  }
+  if (!valid) return;
+
+  orderCustomer = { name, phone, address };
+  document.getElementById('orderFormOverlay').classList.remove('show');
+  document.getElementById('paymentOverlay').classList.add('show');
+});
+
+/* Step 3 → back to form */
+document.getElementById('payBackBtn').addEventListener('click', () => {
+  document.getElementById('paymentOverlay').classList.remove('show');
+  document.getElementById('orderFormOverlay').classList.add('show');
+});
+
+/* Step 3 → Step 4: done paying → send WA silently + show thank you */
+document.getElementById('btnDonePaying').addEventListener('click', () => {
+  const lines = cart.map(i => {
+    const label = `${i.name}${i.detail ? ' – ' + i.detail : ''} x${i.qty}`;
+    const dots  = '.'.repeat(Math.max(2, 26 - label.length));
+    return `• ${label} ${dots} ₪${i.unitPrice * i.qty}`;
+  }).join('\n');
+  const msg =
+    `🧾 הזמנה חדשה!\n` +
+    `👤 ${orderCustomer.name}\n` +
+    `📞 ${orderCustomer.phone}\n` +
+    `📍 ${orderCustomer.address}\n` +
+    `─────────────\n` +
+    `${lines}\n` +
+    `─────────────\n` +
+    `💰 סה״כ: ₪${cartTotal()}`;
+  window.open(waLink(msg), '_blank');
+
+  document.getElementById('paymentOverlay').classList.remove('show');
+  document.body.style.overflow = '';
   cart = [];
+  orderCustomer = { name: '', phone: '', address: '' };
   updateCartUI();
   showThankyou();
 });
 
 /* ================================================
-   THANK YOU PAGE
+   THANK YOU PAGE (STEP 4)
    ================================================ */
 function showThankyou() {
   const overlay = document.getElementById('thankyouOverlay');
@@ -941,7 +1176,6 @@ function showThankyou() {
 }
 document.getElementById('tyBack').addEventListener('click', () => {
   document.getElementById('thankyouOverlay').classList.remove('show');
-  cart = [];
   updateCartUI();
 });
 
